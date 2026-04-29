@@ -5,6 +5,7 @@ import { routing } from "@/i18n/routing";
 import { Providers } from "@/providers/Providers";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { SplashScreen } from "@/components/animations";
 
 type Props = {
   children: React.ReactNode;
@@ -30,6 +31,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     <>
       <NextIntlClientProvider locale={locale} messages={messages}>
         <Providers>
+          <SplashScreen />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
