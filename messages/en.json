@@ -1,0 +1,96 @@
+{
+  "Header": {
+    "language": "En"
+  },
+  "Hero": {
+    "badge1": "Higher Sales",
+    "badge2": "Lower Incentive Costs",
+    "title": "Welcome to",
+    "titleHighlight": "PEPSELL 2.0",
+    "subtitle": "The ultimate sales performance platform that adapts to your needs"
+  },
+  "Adaptability": {
+    "logo": "pepsell",
+    "title": "Pepsell 2.0",
+    "subtitle": "adapts to the user preferences by itself!",
+    "tags": {
+      "language": "Language",
+      "theme": "Dark / Light Theme",
+      "catalog": "Catalog Adaptation",
+      "geo": "Geo-Adaptation",
+      "role": "Role-Based Access",
+      "analytics": "Smart Analytics"
+    }
+  },
+  "Quotes": {
+    "quote1": {
+      "text": "\"The best investment you can make is in yourself.\"",
+      "author": "Warren Buffett"
+    },
+    "quote2": {
+      "text": "\"Do not be embarrassed by your failures, learn from them and start again.\"",
+      "author": "Richard Branson"
+    },
+    "quote3": {
+      "text": "\"Don't be afraid to give up the good to go for the great.\"",
+      "author": "John D. Rockefeller"
+    }
+  },
+  "Industries": {
+    "title": "Industries we serve",
+    "tags": {
+      "telco": "Mobile Telco",
+      "diy": "DIY",
+      "pharmacy": "Pharmacy",
+      "eshop": "E-Shop",
+      "fmcg": "FMCG",
+      "retail": "Retail"
+    }
+  },
+  "Motivation": {
+    "title": "Pepsell 2.0",
+    "subtitle": "keep in mind everything about your motivation activity",
+    "expenses": "Expenses",
+    "credits": "Credits"
+  },
+  "Features": {
+    "title": "Everything you need",
+    "subtitle": "All-in-one platform for sales teams",
+    "items": {
+      "stock": {
+        "title": "Out Of Stock Control",
+        "description": "Real-time inventory monitoring and automatic alerts"
+      },
+      "merchandising": {
+        "title": "Merchandising (AI Planogram)",
+        "description": "AI-powered shelf planning and visual merchandising"
+      },
+      "planfact": {
+        "title": "Plan / Fact",
+        "description": "Track performance against targets in real time"
+      },
+      "education": {
+        "title": "Education & Promotion",
+        "description": "Training modules and promotional campaign management"
+      },
+      "ordering": {
+        "title": "Product Ordering",
+        "description": "Streamlined ordering process with smart suggestions"
+      }
+    }
+  },
+  "Footer": {
+    "solutions": "Solutions",
+    "company": "Company",
+    "resources": "Resources",
+    "contact": "Contact",
+    "aboutUs": "About Us",
+    "careers": "Careers",
+    "blog": "Blog",
+    "docs": "Documentation",
+    "support": "Support",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "rights": "All rights reserved"
+  }
+}
