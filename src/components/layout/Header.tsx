@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export function Header() {
   const t = useTranslations("Header");
@@ -24,44 +25,15 @@ export function Header() {
     >
       {/* Logo */}
       <div className="flex items-center gap-2">
-        <svg
-          width="140"
-          height="32"
-          viewBox="0 0 140 32"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="text-white"
-        >
-          <rect
-            x="1"
-            y="4"
-            width="138"
-            height="24"
-            rx="4"
-            stroke="currentColor"
-            strokeWidth="2"
-            fill="none"
+        <div className="relative w-[120px] h-[32px] md:w-[150px] md:h-[40px]">
+          <Image
+            src="/pepsell-logo.svg"
+            alt="PEPSELL"
+            fill
+            className="object-contain"
+            priority
           />
-          <text
-            x="12"
-            y="22"
-            fill="currentColor"
-            fontFamily="var(--font-geist-sans), sans-serif"
-            fontSize="14"
-            fontWeight="700"
-            letterSpacing="1"
-          >
-            pepsell
-          </text>
-          <path
-            d="M115 20L122 12L126 16L132 8"
-            stroke="#E53935"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-          />
-        </svg>
+        </div>
       </div>
 
       {/* Language Switcher */}

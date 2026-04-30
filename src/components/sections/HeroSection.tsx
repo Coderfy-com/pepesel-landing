@@ -1,225 +1,223 @@
 "use client";
 
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
-import {
-  StaggerContainer,
-  StaggerItem,
-  ParallaxWrapper,
-} from "@/components/animations";
+
+/*
+  ANIMATION PHASES (matching Figma prototype):
+  0.0s – 0.1s  : dot (Red dot appears)
+  0.1s – 1.0s  : capsule (Expands horizontally into a capsule)
+  1.0s – 2.0s  : logo (PEPSELL 2.0 logo fades in inside the capsule)
+  2.0s – 3.0s  : expand (Capsule expands vertically to full screen)
+  3.0s – 3.5s  : fade-logo (PEPSELL 2.0 fades OUT)
+  3.5s – 5.0s  : welcome (Red background. "Welcome to", Left-aligned Logo, Subtitle fade IN. Side phones slide IN)
+  5.0s – ...   : final (Background transitions to #111113. Floating badges pop in)
+*/
 
 export function HeroSection() {
   const t = useTranslations("Hero");
+  const [phase, setPhase] = useState<
+    "dot" | "capsule" | "logo" | "expand" | "fade-logo" | "welcome" | "final"
+  >("dot");
 
-  const titleWords = t("title").split(" ");
+  useEffect(() => {
+    const timers = [
+      setTimeout(() => setPhase("capsule"),    100),
+      setTimeout(() => setPhase("logo"),       1000),
+      setTimeout(() => setPhase("expand"),     2000),
+      setTimeout(() => setPhase("fade-logo"),  3000),
+      setTimeout(() => setPhase("welcome"),    3500),
+      setTimeout(() => setPhase("final"),      5000),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, []);
+
+  const isExpanded = phase === "expand" || phase === "fade-logo" || phase === "welcome" || phase === "final";
+  const showCenterLogo = phase === "logo" || phase === "expand";
+  const showHeroContent = phase === "welcome" || phase === "final";
+  const isFinalDark = phase === "final";
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0A0A]">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Diagonal stripes */}
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{ y: -200, opacity: 0 }}
-            animate={{ y: 0, opacity: 0.15 }}
-            transition={{ duration: 1.2, delay: i * 0.1, ease: "easeOut" }}
-            className="absolute w-16 md:w-24 rounded-full"
-            style={{
-              height: "140%",
-              background:
-                i % 3 === 0
-                  ? "linear-gradient(180deg, #E53935, #D32F2F)"
-                  : i % 3 === 1
-                    ? "linear-gradient(180deg, #FF6D00, #E53935)"
-                    : "linear-gradient(180deg, #666, #333)",
-              left: `${10 + i * 16}%`,
-              top: "-20%",
-              transform: `rotate(${-15 + i * 5}deg)`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left: Text */}
-          <StaggerContainer className="flex flex-col gap-6">
-            {/* Badges */}
-            <StaggerItem>
-              <div className="flex flex-wrap gap-3">
-                <motion.span
-                  whileHover={{ scale: 1.05 }}
-                  className="px-4 py-2 rounded-full bg-gradient-to-r from-[#E53935] to-[#FF6D00] text-white text-sm font-semibold shadow-lg shadow-red-500/20"
-                >
-                  📈 {t("badge1")}
-                </motion.span>
-                <motion.span
-                  whileHover={{ scale: 1.05 }}
-                  className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-sm font-semibold border border-white/20"
-                >
-                  💰 {t("badge2")}
-                </motion.span>
+    <section className="relative w-full h-screen overflow-hidden bg-[#111113] font-montserrat">
+      {/* Background layer: handles the red expanding shape and transition to black */}
+      <motion.div
+        animate={{
+          backgroundColor: isFinalDark ? "#111113" : "#980000",
+          width: phase === "dot" ? "0px" : isExpanded ? "100vw" : "min(1553px, 100vw)",
+          height: phase === "dot" ? "0px" : isExpanded ? "100vh" : "min(267px, 30vw)",
+          borderRadius: isExpanded ? "0px" : "9999px",
+        }}
+        transition={{
+          backgroundColor: { duration: 1, ease: "easeInOut" },
+          width: { duration: phase === "dot" ? 0.01 : phase === "capsule" ? 0.9 : 0.8, ease: [0.76, 0, 0.24, 1] },
+          height: { duration: phase === "expand" ? 0.9 : 0.01, ease: [0.76, 0, 0.24, 1] },
+          borderRadius: { duration: 0.6, ease: "easeOut" },
+        }}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center overflow-hidden"
+      >
+        {/* CENTERED LOGO (inside capsule) */}
+        <AnimatePresence>
+          {(showCenterLogo || phase === "fade-logo") && (
+            <motion.div
+              key="center-logo"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: showCenterLogo ? 1 : 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="flex items-center justify-center gap-4 md:gap-8 absolute"
+            >
+              <div className="relative w-[180px] h-[24px] md:w-[540px] md:h-[66px] lg:w-[810px] lg:h-[99px] xl:w-[1080px] xl:h-[132px]">
+                <Image src="/pepsell-logo.svg" alt="PEPSELL" fill className="object-contain" priority />
               </div>
-            </StaggerItem>
+              <span className="text-white font-normal leading-[1.3] text-[32px] md:text-[80px] lg:text-[120px] xl:text-[150px]">
+                2.0
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
 
-            {/* Title */}
-            <StaggerItem>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
-                {titleWords.map((word, i) => (
-                  <motion.span
-                    key={i}
+      {/* === FINAL HERO CONTENT === */}
+      <AnimatePresence>
+        {showHeroContent && (
+          <motion.div
+            key="hero-content"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="absolute inset-0 z-10 w-full h-full max-w-[1920px] mx-auto px-6 md:px-12 lg:px-24 flex items-center"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 w-full relative">
+              
+              {/* LEFT SIDE: Text Content */}
+              <div className="flex flex-col justify-center gap-8 z-20 pt-20 lg:pt-0 max-w-[887px]">
+                <div className="flex flex-col gap-6">
+                  {/* Welcome to */}
+                  <motion.h1
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
-                    className="inline-block mr-3"
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                    className="text-white text-[48px] lg:text-[96px] font-normal leading-[1.3]"
                   >
-                    {word}
-                  </motion.span>
-                ))}
-                <br />
-                <motion.span
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.8, duration: 0.6, type: "spring" }}
-                  className="bg-gradient-to-r from-[#E53935] to-[#FF6D00] bg-clip-text text-transparent"
-                >
-                  {t("titleHighlight")}
-                </motion.span>
-              </h1>
-            </StaggerItem>
+                    {t("title")}
+                  </motion.h1>
 
-            {/* Subtitle */}
-            <StaggerItem>
-              <p className="text-lg md:text-xl text-white/60 max-w-lg">
-                {t("subtitle")}
-              </p>
-            </StaggerItem>
-
-            {/* CTA Button */}
-            <StaggerItem>
-              <motion.button
-                whileHover={{ scale: 1.03, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#E53935] to-[#D32F2F] text-white font-semibold text-lg shadow-xl shadow-red-500/30 hover:shadow-red-500/50 transition-shadow duration-300 w-fit"
-              >
-                Get Started
-              </motion.button>
-            </StaggerItem>
-          </StaggerContainer>
-
-          {/* Right: Phone Mockup */}
-          <ParallaxWrapper speed={0.2} className="flex justify-center">
-            <motion.div
-              initial={{ opacity: 0, y: 40, rotateY: -10 }}
-              animate={{ opacity: 1, y: 0, rotateY: 0 }}
-              transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
-              className="relative"
-            >
-              {/* Phone frame */}
-              <div className="relative w-[280px] md:w-[320px] h-[560px] md:h-[640px] bg-gradient-to-b from-[#1A1A1A] to-[#0A0A0A] rounded-[3rem] border-2 border-white/10 shadow-2xl shadow-black/50 overflow-hidden">
-                {/* Status bar */}
-                <div className="flex items-center justify-between px-6 pt-3 pb-2">
-                  <span className="text-white/50 text-xs font-medium">
-                    17:00
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <div className="w-4 h-2 rounded-sm bg-white/30" />
-                    <div className="w-4 h-2 rounded-sm bg-white/30" />
-                    <div className="w-6 h-3 rounded-sm bg-white/40" />
-                  </div>
-                </div>
-
-                {/* App content */}
-                <div className="flex flex-col items-center justify-center flex-1 px-8 py-12">
-                  {/* Logo inside phone */}
+                  {/* SVG Logo (pepsell 2.0) - Left aligned */}
                   <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 1, duration: 0.5 }}
-                    className="w-full py-8 flex items-center justify-center"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                    className="flex items-center gap-6"
                   >
-                    <div className="px-6 py-3 border-2 border-[#E53935] rounded-lg">
-                      <span className="text-[#E53935] font-bold text-2xl tracking-wider">
-                        pepsell
-                      </span>
-                      <svg
-                        width="24"
-                        height="16"
-                        viewBox="0 0 24 16"
-                        className="inline-block ml-2"
-                      >
-                        <path
-                          d="M2 12L8 4L12 8L22 2"
-                          stroke="#E53935"
-                          strokeWidth="2.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          fill="none"
-                        />
-                      </svg>
+                    <div className="relative w-[280px] h-[34px] md:w-[450px] md:h-[55px] lg:w-[711px] lg:h-[87px]">
+                      <Image src="/pepsell-logo.svg" alt="PEPSELL" fill className="object-contain object-left" priority />
                     </div>
+                    <span className="text-white font-normal leading-[1.3] text-[32px] md:text-[64px] lg:text-[96px]">
+                      2.0
+                    </span>
                   </motion.div>
 
-                  {/* Login form mockup */}
-                  <div className="w-full flex flex-col gap-4 mt-6">
-                    <div className="text-center text-white/80 font-semibold text-lg mb-2">
-                      Login
-                    </div>
-                    <div className="flex gap-2 justify-center">
-                      {[...Array(4)].map((_, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ delay: 1.2 + i * 0.1, type: "spring" }}
-                          className="w-10 h-12 rounded-lg bg-white/10 border border-white/20"
-                        />
-                      ))}
-                    </div>
-                    <motion.div
-                      initial={{ scaleX: 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={{ delay: 1.6, duration: 0.4 }}
-                      className="w-full h-12 rounded-xl bg-gradient-to-r from-[#E53935]/60 to-[#E53935] mt-2"
-                    />
-                    <p className="text-center text-white/40 text-sm mt-1">
-                      Registration
-                    </p>
-                  </div>
+                  {/* Subtitle */}
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.6 }}
+                    className="text-white text-[20px] lg:text-[32px] font-medium leading-[1.5] max-w-[887px]"
+                    style={{ whiteSpace: "pre-line" }}
+                  >
+                    {t("subtitle")}
+                  </motion.p>
                 </div>
-
-                {/* Home indicator */}
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 rounded-full bg-white/20" />
               </div>
 
-              {/* Decorative arrows */}
-              <motion.svg
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 0.6, scale: 1 }}
-                transition={{ delay: 1.5, duration: 0.5 }}
-                width="120"
-                height="120"
-                viewBox="0 0 120 120"
-                className="absolute -bottom-8 -left-16 text-[#E53935]"
-              >
-                <path
-                  d="M20 100L60 20L80 60L110 10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  fill="none"
-                />
-              </motion.svg>
-            </motion.div>
-          </ParallaxWrapper>
-        </div>
-      </div>
+              {/* RIGHT SIDE: Phones */}
+              <div className="hidden lg:flex items-center justify-center relative w-full h-[800px] z-10">
+                {/* Left Phone */}
+                <motion.div
+                  initial={{ x: "100%", y: "-10%", opacity: 0 }}
+                  animate={{ x: "-10%", y: "-10%", opacity: 1 }}
+                  transition={{ duration: 1.2, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                  className="absolute z-20 w-[450px] max-w-[30vw]"
+                >
+                  <Image
+                    src="/images/splash-product-left.png"
+                    alt="Pepsell Interface 1"
+                    width={663}
+                    height={1019}
+                    className="w-full h-auto object-contain drop-shadow-2xl"
+                    priority
+                  />
+                </motion.div>
 
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0A0A0A] to-transparent" />
+                {/* Right Phone */}
+                <motion.div
+                  initial={{ x: "150%", y: "10%", opacity: 0 }}
+                  animate={{ x: "30%", y: "10%", opacity: 1 }}
+                  transition={{ duration: 1.2, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                  className="absolute z-10 w-[450px] max-w-[30vw]"
+                >
+                  <Image
+                    src="/images/splash-product-right.png"
+                    alt="Pepsell Interface 2"
+                    width={663}
+                    height={1019}
+                    className="w-full h-auto object-contain drop-shadow-2xl"
+                    priority
+                  />
+                </motion.div>
+              </div>
+
+              {/* FLOATING BADGES (Appear in final phase) */}
+              <AnimatePresence>
+                {isFinalDark && (
+                  <>
+                    {/* Higher Sales Badge */}
+                    <motion.div
+                      initial={{ y: "-120vh", opacity: 0, rotate: -5 }}
+                      animate={{ y: 0, opacity: 1, rotate: 0 }}
+                      transition={{ 
+                        duration: 1.4, 
+                        delay: 0.1, 
+                        type: "spring",
+                        bounce: 0.4,
+                        damping: 12
+                      }}
+                      style={{ left: "161px", bottom: "32px" }}
+                      className="absolute z-30 px-[44px] py-[32px] rounded-full bg-white shadow-2xl flex items-center justify-center min-w-[404px] h-[116px]"
+                    >
+                      <span className="text-[#0A0A0A] font-bold text-[48px] leading-none tracking-tight whitespace-nowrap">
+                        {t("badge1")}
+                      </span>
+                    </motion.div>
+
+                    {/* Lower Incentive Costs Badge */}
+                    <motion.div
+                      initial={{ y: "-150vh", opacity: 0, rotate: -10 }}
+                      animate={{ y: 0, opacity: 1, rotate: 10.178 }}
+                      transition={{ 
+                        duration: 1.6, 
+                        delay: 0.3, 
+                        type: "spring",
+                        bounce: 0.4,
+                        damping: 12
+                      }}
+                      style={{ left: "494px", bottom: "28.4px" }}
+                      className="absolute z-30 px-[44px] py-[32px] rounded-full bg-white shadow-2xl flex items-center justify-center min-w-[642px] h-[116px]"
+                    >
+                      <span className="text-[#0A0A0A] font-bold text-[48px] leading-none tracking-tight whitespace-nowrap">
+                        {t("badge2")}
+                      </span>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

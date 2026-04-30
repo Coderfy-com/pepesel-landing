@@ -31,7 +31,6 @@ export default async function LocaleLayout({ children, params }: Props) {
     <>
       <NextIntlClientProvider locale={locale} messages={messages}>
         <Providers>
-          <SplashScreen />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
