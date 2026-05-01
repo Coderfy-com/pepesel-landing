@@ -44,7 +44,7 @@ export function HeroSection() {
   const isFinalDark   = phase === "final";
 
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-white font-montserrat">
+    <section className="relative w-full h-full overflow-hidden bg-white font-montserrat">
 
       {/* =============================================
           BACKGROUND PATTERN

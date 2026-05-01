@@ -1,4 +1,5 @@
 export { HeroSection } from "./HeroSection";
+export { LinesSection } from "./LinesSection";
 export { TransitionPattern } from "./TransitionPattern";
 export { AdaptabilitySection } from "./AdaptabilitySection";
 export { QuoteSection } from "./QuoteSection";
