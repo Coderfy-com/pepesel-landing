@@ -20,12 +20,6 @@ export default async function HomePage({ params }: Props) {
   return (
     <>
       <HeroSection />
-      <TransitionPattern />
-      <AdaptabilitySection />
-      <QuoteSection />
-      <IndustriesSection />
-      <MotivationSection />
-      <FeaturesSection />
     </>
   );
 }

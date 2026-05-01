@@ -33,7 +33,6 @@ export default async function LocaleLayout({ children, params }: Props) {
         <Providers>
           <Header />
           <main className="flex-1">{children}</main>
-          <Footer />
         </Providers>
       </NextIntlClientProvider>
     </>

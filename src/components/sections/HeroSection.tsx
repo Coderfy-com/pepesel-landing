@@ -41,6 +41,26 @@ export function HeroSection() {
 
   return (
     <section className="relative w-full h-screen overflow-hidden bg-[#111113] font-montserrat">
+      {/* BACKGROUND PATTERN (Fades in during final phase) */}
+      <AnimatePresence>
+        {isFinalDark && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="absolute inset-0 z-[1]"
+          >
+            <Image
+              src="/images/hero/hero-bg.png"
+              alt=""
+              fill
+              className="object-cover"
+              priority
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Background layer: handles the red expanding shape and transition to black */}
       <motion.div
         animate={{
@@ -71,7 +91,7 @@ export function HeroSection() {
               <div className="relative w-[180px] h-[24px] md:w-[540px] md:h-[66px] lg:w-[810px] lg:h-[99px] xl:w-[1080px] xl:h-[132px]">
                 <Image src="/pepsell-logo.svg" alt="PEPSELL" fill className="object-contain" priority />
               </div>
-              <span className="text-white font-normal leading-[1.3] text-[32px] md:text-[80px] lg:text-[120px] xl:text-[150px]">
+              <span className="text-white font-normal leading-none text-[32px] md:text-[80px] lg:text-[120px] xl:text-[150px] -translate-y-1 lg:-translate-y-2 xl:-translate-y-4">
                 2.0
               </span>
             </motion.div>
@@ -87,87 +107,86 @@ export function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="absolute inset-0 z-10 w-full h-full max-w-[1920px] mx-auto px-6 md:px-12 lg:px-24 flex items-center"
+            className="absolute inset-0 z-10 w-full h-full max-w-[1920px] mx-auto overflow-hidden lg:overflow-visible"
           >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 w-full relative">
-              
-              {/* LEFT SIDE: Text Content */}
-              <div className="flex flex-col justify-center gap-8 z-20 pt-20 lg:pt-0 max-w-[887px]">
-                <div className="flex flex-col gap-6">
-                  {/* Welcome to */}
-                  <motion.h1
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="text-white text-[48px] lg:text-[96px] font-normal leading-[1.3]"
-                  >
-                    {t("title")}
-                  </motion.h1>
-
-                  {/* SVG Logo (pepsell 2.0) - Left aligned */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
-                    className="flex items-center gap-6"
-                  >
-                    <div className="relative w-[280px] h-[34px] md:w-[450px] md:h-[55px] lg:w-[711px] lg:h-[87px]">
-                      <Image src="/pepsell-logo.svg" alt="PEPSELL" fill className="object-contain object-left" priority />
-                    </div>
-                    <span className="text-white font-normal leading-[1.3] text-[32px] md:text-[64px] lg:text-[96px]">
-                      2.0
-                    </span>
-                  </motion.div>
-
-                  {/* Subtitle */}
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.6 }}
-                    className="text-white text-[20px] lg:text-[32px] font-medium leading-[1.5] max-w-[887px]"
-                    style={{ whiteSpace: "pre-line" }}
-                  >
-                    {t("subtitle")}
-                  </motion.p>
-                </div>
-              </div>
-
-              {/* RIGHT SIDE: Phones */}
-              <div className="hidden lg:flex items-center justify-center relative w-full h-[800px] z-10">
-                {/* Left Phone */}
-                <motion.div
-                  initial={{ x: "100%", y: "-10%", opacity: 0 }}
-                  animate={{ x: "-10%", y: "-10%", opacity: 1 }}
-                  transition={{ duration: 1.2, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                  className="absolute z-20 w-[450px] max-w-[30vw]"
+            {/* LEFT SIDE: Text Content */}
+            <div className="flex flex-col z-20 absolute left-6 lg:left-[10px] top-[150px] lg:top-[210px] w-[calc(100%-48px)] lg:w-auto pointer-events-none">
+              {/* Title Group */}
+              <div className="flex flex-col gap-[16px] lg:gap-[25px]">
+                {/* Welcome to */}
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="text-white text-[48px] lg:text-[96px] font-normal leading-[1.3] pointer-events-auto"
                 >
-                  <Image
-                    src="/images/splash-product-left.png"
-                    alt="Pepsell Interface 1"
-                    width={663}
-                    height={1019}
-                    className="w-full h-auto object-contain drop-shadow-2xl"
-                    priority
-                  />
-                </motion.div>
+                  {t("title")}
+                </motion.h1>
 
-                {/* Right Phone */}
+                {/* SVG Logo (pepsell 2.0) */}
                 <motion.div
-                  initial={{ x: "150%", y: "10%", opacity: 0 }}
-                  animate={{ x: "30%", y: "10%", opacity: 1 }}
-                  transition={{ duration: 1.2, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-                  className="absolute z-10 w-[450px] max-w-[30vw]"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  className="flex items-center gap-6 pointer-events-auto"
                 >
-                  <Image
-                    src="/images/splash-product-right.png"
-                    alt="Pepsell Interface 2"
-                    width={663}
-                    height={1019}
-                    className="w-full h-auto object-contain drop-shadow-2xl"
-                    priority
-                  />
+                  <div className="relative w-[280px] h-[34px] md:w-[450px] md:h-[55px] lg:w-[711px] lg:h-[87px]">
+                    <Image src="/pepsell-logo.svg" alt="PEPSELL" fill className="object-contain object-left" priority />
+                  </div>
+                  <span className="text-white font-normal leading-none text-[32px] md:text-[64px] lg:text-[96px] -translate-y-1 lg:-translate-y-2">
+                    2.0
+                  </span>
                 </motion.div>
               </div>
+
+              {/* Subtitle */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="text-white text-[20px] lg:text-[32px] font-medium leading-[1.5] mt-[24px] lg:mt-[56px] max-w-[887px] pointer-events-auto"
+                style={{ whiteSpace: "pre-line" }}
+              >
+                {t("subtitle")}
+              </motion.p>
+            </div>
+
+            {/* RIGHT SIDE: Phones */}
+            <div className="hidden lg:block pointer-events-none">
+              {/* Left Phone */}
+              <motion.div
+                initial={{ x: "20%", opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1.2, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                className="absolute z-20 pointer-events-auto"
+                style={{ right: "306px", top: "-123px", width: "663px", height: "1019px" }}
+              >
+                <Image
+                  src="/images/splash-product-left.png"
+                  alt="Pepsell Interface 1"
+                  fill
+                  className="object-contain drop-shadow-2xl"
+                  priority
+                />
+              </motion.div>
+
+              {/* Right Phone */}
+              <motion.div
+                initial={{ x: "20%", opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1.2, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                className="absolute z-10 pointer-events-auto"
+                style={{ right: "-26px", bottom: "-149px", width: "663px", height: "1019px" }}
+              >
+                <Image
+                  src="/images/splash-product-right.png"
+                  alt="Pepsell Interface 2"
+                  fill
+                  className="object-contain drop-shadow-2xl"
+                  priority
+                />
+              </motion.div>
+            </div>
 
               {/* FLOATING BADGES (Appear in final phase) */}
               <AnimatePresence>
@@ -184,8 +203,8 @@ export function HeroSection() {
                         bounce: 0.4,
                         damping: 12
                       }}
-                      style={{ left: "161px", bottom: "32px" }}
-                      className="absolute z-30 px-[44px] py-[32px] rounded-full bg-white shadow-2xl flex items-center justify-center min-w-[404px] h-[116px]"
+                      style={{ left: "161px", top: "932px", zIndex: 30 }}
+                      className="absolute px-[44px] py-[32px] rounded-full bg-white shadow-2xl flex items-center justify-center w-max min-w-[404px] h-[116px]"
                     >
                       <span className="text-[#0A0A0A] font-bold text-[48px] leading-none tracking-tight whitespace-nowrap">
                         {t("badge1")}
@@ -203,8 +222,13 @@ export function HeroSection() {
                         bounce: 0.4,
                         damping: 12
                       }}
-                      style={{ left: "494px", bottom: "28.4px" }}
-                      className="absolute z-30 px-[44px] py-[32px] rounded-full bg-white shadow-2xl flex items-center justify-center min-w-[642px] h-[116px]"
+                      style={{ 
+                        left: "494px", 
+                        top: "824px", 
+                        zIndex: 30,
+                        transformOrigin: "top left"
+                      }}
+                      className="absolute px-[44px] py-[32px] rounded-full bg-white shadow-2xl flex items-center justify-center w-max min-w-[642px] h-[116px]"
                     >
                       <span className="text-[#0A0A0A] font-bold text-[48px] leading-none tracking-tight whitespace-nowrap">
                         {t("badge2")}
@@ -213,8 +237,6 @@ export function HeroSection() {
                   </>
                 )}
               </AnimatePresence>
-
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
