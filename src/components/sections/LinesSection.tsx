@@ -1,20 +1,31 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import React, { useState } from "react";
 
 const lines = [
-  { d: "M105.565 73.3799C110.32 55.4775 128.394 45.7944 145.933 51.7521C163.472 57.7097 173.835 77.0522 169.079 94.9546L64.6706 487.986C59.9148 505.889 41.8412 515.572 24.3022 509.614C6.76308 503.657 -3.59987 484.314 1.15591 466.412L105.565 73.3799Z", fill: "#23232A", xRange: -20, yRange: 40 },
-  { d: "M246.49 210.872C251.246 192.97 269.319 183.287 286.858 189.245C304.397 195.202 314.76 214.545 310.004 232.447L205.595 625.479C200.839 643.381 182.766 653.064 165.227 647.107C147.688 641.149 137.325 621.806 142.08 603.904L246.49 210.872Z", fill: "#981A1E", xRange: 20, yRange: -40 },
-  { d: "M462.026 51.5097C466.781 33.6073 484.855 23.9241 502.394 29.8819C519.933 35.8396 530.296 55.182 525.54 73.0844L421.131 466.116C416.375 484.018 398.302 493.702 380.762 487.744C363.223 481.786 352.86 462.444 357.616 444.541L462.026 51.5097Z", fill: "#EF4C35", xRange: -25, yRange: 50 },
-  { d: "M625.056 132.743C629.811 114.841 647.885 105.158 665.424 111.115C682.963 117.073 693.326 136.415 688.57 154.318L584.162 547.35C579.406 565.252 561.332 574.935 543.793 568.978C526.254 563.02 515.891 543.677 520.647 525.775L625.056 132.743Z", fill: "#23232A", xRange: 15, yRange: -35 },
-  { d: "M835.063 23.3841C839.819 5.48167 857.893 -4.20147 875.432 1.75625C892.971 7.71397 903.334 27.0564 898.578 44.9588L794.169 437.99C789.413 455.893 771.339 465.576 753.8 459.618C736.261 453.66 725.898 434.318 730.654 416.416L835.063 23.3841Z", fill: "#981A1E", xRange: -20, yRange: 40 },
-  { d: "M995.333 188.987C1000.09 171.084 1018.16 161.401 1035.7 167.359C1053.24 173.316 1063.6 192.659 1058.85 210.561L954.438 603.593C949.683 621.495 931.609 631.178 914.07 625.221C896.531 619.263 886.168 599.921 890.924 582.018L995.333 188.987Z", fill: "#EF4C35", xRange: 30, yRange: -50 },
+  { d: "M105.565 73.3799C110.32 55.4775 128.394 45.7944 145.933 51.7521C163.472 57.7097 173.835 77.0522 169.079 94.9546L64.6706 487.986C59.9148 505.889 41.8412 515.572 24.3022 509.614C6.76308 503.657 -3.59987 484.314 1.15591 466.412L105.565 73.3799Z", fill: "#23232A", xRange: -31.88, yRange: 120 },
+  { d: "M246.49 210.872C251.246 192.97 269.319 183.287 286.858 189.245C304.397 195.202 314.76 214.545 310.004 232.447L205.595 625.479C200.839 643.381 182.766 653.064 165.227 647.107C147.688 641.149 137.325 621.806 142.08 603.904L246.49 210.872Z", fill: "#981A1E", xRange: 39.85, yRange: -150 },
+  { d: "M462.026 51.5097C466.781 33.6073 484.855 23.9241 502.394 29.8819C519.933 35.8396 530.296 55.182 525.54 73.0844L421.131 466.116C416.375 484.018 398.302 493.702 380.762 487.744C363.223 481.786 352.86 462.444 357.616 444.541L462.026 51.5097Z", fill: "#EF4C35", xRange: -47.82, yRange: 180 },
+  { d: "M625.056 132.743C629.811 114.841 647.885 105.158 665.424 111.115C682.963 117.073 693.326 136.415 688.57 154.318L584.162 547.35C579.406 565.252 561.332 574.935 543.793 568.978C526.254 563.02 515.891 543.677 520.647 525.775L625.056 132.743Z", fill: "#23232A", xRange: 31.88, yRange: -120 },
+  { d: "M835.063 23.3841C839.819 5.48167 857.893 -4.20147 875.432 1.75625C892.971 7.71397 903.334 27.0564 898.578 44.9588L794.169 437.99C789.413 455.893 771.339 465.576 753.8 459.618C736.261 453.66 725.898 434.318 730.654 416.416L835.063 23.3841Z", fill: "#981A1E", xRange: -39.85, yRange: 150 },
+  { d: "M995.333 188.987C1000.09 171.084 1018.16 161.401 1035.7 167.359C1053.24 173.316 1063.6 192.659 1058.85 210.561L954.438 603.593C949.683 621.495 931.609 631.178 914.07 625.221C896.531 619.263 886.168 599.921 890.924 582.018L995.333 188.987Z", fill: "#EF4C35", xRange: 47.82, yRange: -180 },
 ];
 
-export function LinesSection() {
+// Duration of one animation cycle in seconds (matching 1200ms from Figma)
+const LINE_ANIM_DURATION = 1.2;
+
+interface LinesSectionProps {
+  children?: React.ReactNode;
+}
+
+export function LinesSection({ children }: LinesSectionProps) {
+  const [isFinished, setIsFinished] = useState(false);
+
   return (
     <section className="relative w-full h-full overflow-hidden bg-[#111113] flex items-center justify-center">
       <div className="relative w-full max-w-[1100px] aspect-[1100/660] flex justify-center items-center">
+        {/* SVG Lines — one complete animation cycle only */}
         <svg
           viewBox="0 0 1100 660"
           fill="none"
@@ -26,34 +37,59 @@ export function LinesSection() {
               key={i}
               d={line.d}
               fill={line.fill}
-              initial={{ y: 60, x: 0, opacity: 0 }}
+              initial={{ y: 0, x: 0, opacity: 0 }}
               whileInView={{
                 x: [0, line.xRange, 0],
                 y: [0, line.yRange, 0],
-                opacity: 1,
+                opacity: [0, 1, 1, 0.5],
               }}
               transition={{
                 x: {
-                  duration: 2.4,
-                  repeat: Infinity,
+                  duration: LINE_ANIM_DURATION * 2,
                   ease: "easeInOut",
                   delay: i * 0.1,
+                  times: [0, 0.5, 1],
                 },
                 y: {
-                  duration: 2.4,
-                  repeat: Infinity,
+                  duration: LINE_ANIM_DURATION * 2,
                   ease: "easeInOut",
                   delay: i * 0.1,
+                  times: [0, 0.5, 1],
                 },
                 opacity: {
-                  duration: 0.8,
+                  duration: LINE_ANIM_DURATION * 2,
+                  ease: "easeInOut",
                   delay: i * 0.1,
+                  times: [0, 0.1, 0.8, 1],
                 },
               }}
-              viewport={{ once: false, amount: 0.1 }}
+              viewport={{ once: true, amount: 0.1 }}
+              onAnimationComplete={() => {
+                // Trigger text appearance when the last line finishes
+                if (i === lines.length - 1) {
+                  setIsFinished(true);
+                }
+              }}
             />
           ))}
         </svg>
+
+        {/* Overlay content (text, etc.) — appears after lines finish */}
+        <AnimatePresence>
+          {children && isFinished && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 1.2,
+                ease: "easeOut",
+              }}
+            >
+              {children}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
