@@ -2,6 +2,7 @@ export { HeroSection } from "./HeroSection";
 export { LinesSection } from "./LinesSection";
 export { TransitionPattern } from "./TransitionPattern";
 export { AdaptabilitySection } from "./AdaptabilitySection";
+export { AdaptiveUISection } from "./AdaptiveUISection";
 export { QuoteSection } from "./QuoteSection";
 export { IndustriesSection } from "./IndustriesSection";
 export { MotivationSection } from "./MotivationSection";

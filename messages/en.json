@@ -22,6 +22,18 @@
       "analytics": "Smart Analytics"
     }
   },
+  "AdaptiveUI": {
+    "badge": "Adaptive UI",
+    "subtitle": "adapts to the user preferences by itself!",
+    "badges": {
+      "catalog": "adapt catalog to your preference",
+      "lang": "adapt to your lang",
+      "activity": "optimize to your activity log",
+      "theme": "adapt to your dark/light mode policy",
+      "geo": "geo adapt",
+      "voice": "voice support"
+    }
+  },
   "Quotes": {
     "quote1": {
       "text": "\"The best investment you can make is in yourself.\"",

@@ -1,9 +1,10 @@
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
 import {
   HeroSection,
   TransitionPattern,
   AdaptabilitySection,
+  AdaptiveUISection,
   QuoteSection,
   IndustriesSection,
   MotivationSection,
@@ -17,6 +18,7 @@ type Props = {
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("Adaptability");
 
   return (
     <div className="h-[100dvh] w-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth">
@@ -38,10 +40,13 @@ export default async function HomePage({ params }: Props) {
 
             {/* Main Text */}
             <p className="text-white font-montserrat font-medium text-center leading-[120%] px-8 max-w-[1200px]" style={{ fontSize: "clamp(36px, 6vw, 96px)" }}>
-              adapts to the user preferences by itself!
+              {t("subtitle")}
             </p>
           </div>
         </LinesSection>
+      </div>
+      <div className="h-[100dvh] w-full snap-start snap-always shrink-0 relative">
+        <AdaptiveUISection />
       </div>
     </div>
   );
