@@ -100,7 +100,7 @@ export function AdaptiveUISection() {
             bg="#981A1E"
             x={861} y={139}
             rotate={-15}
-            delay={0.45}
+            delay={0.3}
           />
 
           {/* Badge: optimize to your activity log */}
@@ -109,7 +109,7 @@ export function AdaptiveUISection() {
             bg="#EF4C35"
             x={606} y={372}
             rotate={-10}
-            delay={0.5}
+            delay={0.4}
           />
 
           {/* Badge: voice support */}
@@ -119,7 +119,7 @@ export function AdaptiveUISection() {
             textColor="#0A0A0A"
             x={145} y={698}
             rotate={-27}
-            delay={0.7}
+            delay={0.8}
             width={330}
           />
 
@@ -129,7 +129,7 @@ export function AdaptiveUISection() {
             bg="#23232A"
             x={606} y={720}
             rotate={32}
-            delay={0.4}
+            delay={0.5}
             width={650}
           />
 
@@ -139,11 +139,10 @@ export function AdaptiveUISection() {
             style={{ left: "92px", top: "748px" }}
           >
             {/* Badge: adapt to your lang */}
-            {/* Badge: adapt to your lang */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.55, type: "spring", bounce: 0.3 }}
+              initial={{ opacity: 0, y: -100 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
               viewport={{ once: true }}
               className="flex items-center justify-center px-[44px] h-[116px] rounded-full bg-[#EF4C35] shadow-2xl"
               style={{ width: "400px" }}
@@ -155,9 +154,9 @@ export function AdaptiveUISection() {
 
             {/* Badge: adapt to your dark/light mode policy */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.65, type: "spring", bounce: 0.3 }}
+              initial={{ opacity: 0, y: -100 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.7, ease: "easeOut" }}
               viewport={{ once: true }}
               className="flex items-center justify-center px-[44px] h-[116px] rounded-full bg-[#981A1E] shadow-2xl"
               style={{ width: "720px" }}
@@ -176,9 +175,9 @@ export function AdaptiveUISection() {
 function Badge({ text, bg, textColor = "white", x, y, rotate, delay, width }: any) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6, delay, type: "spring", bounce: 0.3 }}
+      initial={{ opacity: 0, y: -100 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
       viewport={{ once: true }}
       className={`absolute flex items-center justify-center px-[44px] h-[116px] rounded-full shadow-2xl ${width ? "" : "w-max"}`}
       style={{ 
