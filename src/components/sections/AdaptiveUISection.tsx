@@ -120,7 +120,7 @@ export function AdaptiveUISection() {
             x={145} y={698}
             rotate={-27}
             delay={0.7}
-            width={320}
+            width={330}
           />
 
           {/* Badge: adapt catalog to your preference */}
