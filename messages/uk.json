@@ -26,12 +26,12 @@
     "badge": "Адаптивний UI",
     "subtitle": "адаптується під вподобання користувача самостійно!",
     "badges": {
-      "catalog": "адаптує каталог під вас",
-      "lang": "adapt to your lang",
+      "catalog": "налаштовує каталоги під вас",
+      "lang": "адаптація мови",
       "activity": "оптимізує під вашу активність",
-      "theme": "adapt to your dark/light mode policy",
+      "theme": "адаптація до вашої темної/світлої теми",
       "geo": "гео-адаптація",
-      "voice": "voice support"
+      "voice": "голосовий ввід"
     }
   },
   "Quotes": {

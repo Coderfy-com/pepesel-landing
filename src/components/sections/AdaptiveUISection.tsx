@@ -120,15 +120,17 @@ export function AdaptiveUISection() {
             x={145} y={698}
             rotate={-27}
             delay={0.7}
+            width={320}
           />
 
           {/* Badge: adapt catalog to your preference */}
           <Badge 
             text={t("badges.catalog")}
             bg="#23232A"
-            x={606} y={589}
-            rotate={25}
+            x={606} y={720}
+            rotate={32}
             delay={0.4}
+            width={650}
           />
 
           {/* Stacked badges: Lang strictly above Theme, touching, aligned to the right edge */}
@@ -137,12 +139,14 @@ export function AdaptiveUISection() {
             style={{ left: "92px", top: "748px" }}
           >
             {/* Badge: adapt to your lang */}
+            {/* Badge: adapt to your lang */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.55, type: "spring", bounce: 0.3 }}
               viewport={{ once: true }}
-              className="flex items-center justify-center px-[44px] h-[116px] rounded-full bg-[#EF4C35] shadow-2xl w-max"
+              className="flex items-center justify-center px-[44px] h-[116px] rounded-full bg-[#EF4C35] shadow-2xl"
+              style={{ width: "400px" }}
             >
               <span className="text-white font-montserrat font-bold text-[32px] leading-none whitespace-nowrap">
                 {t("badges.lang")}
@@ -155,7 +159,8 @@ export function AdaptiveUISection() {
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.65, type: "spring", bounce: 0.3 }}
               viewport={{ once: true }}
-              className="flex items-center justify-center px-[44px] h-[116px] rounded-full bg-[#981A1E] shadow-2xl w-max"
+              className="flex items-center justify-center px-[44px] h-[116px] rounded-full bg-[#981A1E] shadow-2xl"
+              style={{ width: "720px" }}
             >
               <span className="text-white font-montserrat font-bold text-[32px] leading-none whitespace-nowrap">
                 {t("badges.theme")}
@@ -168,20 +173,21 @@ export function AdaptiveUISection() {
   );
 }
 
-function Badge({ text, bg, textColor = "white", x, y, rotate, delay }: any) {
+function Badge({ text, bg, textColor = "white", x, y, rotate, delay, width }: any) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
       whileInView={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, delay, type: "spring", bounce: 0.3 }}
       viewport={{ once: true }}
-      className="absolute flex items-center justify-center px-[44px] h-[116px] rounded-full shadow-2xl w-max"
+      className={`absolute flex items-center justify-center px-[44px] h-[116px] rounded-full shadow-2xl ${width ? "" : "w-max"}`}
       style={{ 
         left: `${x}px`, 
         top: `${y}px`, 
         backgroundColor: bg,
         rotate: `${rotate}deg`,
-        transformOrigin: "center center"
+        transformOrigin: "center center",
+        width: width ? `${width}px` : undefined
       }}
     >
       <span 
