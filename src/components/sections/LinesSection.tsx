@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 
-const lines = [
+export const DEFAULT_LINES = [
   { d: "M105.565 73.3799C110.32 55.4775 128.394 45.7944 145.933 51.7521C163.472 57.7097 173.835 77.0522 169.079 94.9546L64.6706 487.986C59.9148 505.889 41.8412 515.572 24.3022 509.614C6.76308 503.657 -3.59987 484.314 1.15591 466.412L105.565 73.3799Z", fill: "#23232A", xRange: -31.88, yRange: 120 },
   { d: "M246.49 210.872C251.246 192.97 269.319 183.287 286.858 189.245C304.397 195.202 314.76 214.545 310.004 232.447L205.595 625.479C200.839 643.381 182.766 653.064 165.227 647.107C147.688 641.149 137.325 621.806 142.08 603.904L246.49 210.872Z", fill: "#981A1E", xRange: 39.85, yRange: -150 },
   { d: "M462.026 51.5097C466.781 33.6073 484.855 23.9241 502.394 29.8819C519.933 35.8396 530.296 55.182 525.54 73.0844L421.131 466.116C416.375 484.018 398.302 493.702 380.762 487.744C363.223 481.786 352.86 462.444 357.616 444.541L462.026 51.5097Z", fill: "#EF4C35", xRange: -47.82, yRange: 180 },
@@ -17,13 +17,24 @@ const LINE_ANIM_DURATION = 1.2;
 
 interface LinesSectionProps {
   children?: React.ReactNode;
+  bgColor?: string;
+  lines?: typeof DEFAULT_LINES;
+  onFinished?: () => void;
 }
 
-export function LinesSection({ children }: LinesSectionProps) {
+export function LinesSection({ 
+  children, 
+  bgColor = "#111113", 
+  lines = DEFAULT_LINES,
+  onFinished 
+}: LinesSectionProps) {
   const [isFinished, setIsFinished] = useState(false);
 
   return (
-    <section className="relative w-full h-full overflow-hidden bg-[#111113] flex items-center justify-center">
+    <section 
+      className="relative w-full h-full overflow-hidden flex items-center justify-center"
+      style={{ backgroundColor: bgColor }}
+    >
       <div className="relative w-full max-w-[1100px] aspect-[1100/660] flex justify-center items-center">
         {/* SVG Lines — one complete animation cycle only */}
         <svg
@@ -68,6 +79,7 @@ export function LinesSection({ children }: LinesSectionProps) {
                 // Trigger text appearance when the last line finishes
                 if (i === lines.length - 1) {
                   setIsFinished(true);
+                  onFinished?.();
                 }
               }}
             />
@@ -81,6 +93,7 @@ export function LinesSection({ children }: LinesSectionProps) {
               className="absolute inset-0 flex items-center justify-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{
                 duration: 1.2,
                 ease: "easeOut",

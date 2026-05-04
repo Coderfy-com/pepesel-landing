@@ -1,83 +1,44 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import { ScrollReveal } from "@/components/animations";
+import { LinesSection, DEFAULT_LINES } from "./LinesSection";
+import { motion } from "framer-motion";
 
-const quotes = [
-  {
-    key: "quote1",
-    bg: "from-[#FF6D00] to-[#E53935]",
-  },
-  {
-    key: "quote2",
-    bg: "from-[#E53935] to-[#B71C1C]",
-  },
-  {
-    key: "quote3",
-    bg: "from-[#1A1A1A] to-[#0A0A0A]",
-  },
-] as const;
+// Custom lines for the Quote Section — using white and black/dark colors on red background
+const QUOTE_LINES = DEFAULT_LINES.map((line, i) => {
+  // Use white for the 2nd and 5th lines to match the Figma "highlight" pills
+  if (i === 1 || i === 4) {
+    return { ...line, fill: "#FFFFFF" };
+  }
+  // Others are dark/black
+  return { ...line, fill: "#23232A" };
+});
 
 export function QuoteSection() {
   const t = useTranslations("Quotes");
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
   return (
-    <section ref={sectionRef} className="relative">
-      <motion.div style={{ opacity }}>
-        {quotes.map((quote, idx) => (
-          <div
-            key={quote.key}
-            className={`py-24 md:py-32 bg-gradient-to-br ${quote.bg}`}
-          >
-            <div className="max-w-5xl mx-auto px-6 md:px-12">
-              <ScrollReveal animation="scaleIn" delay={0.1}>
-                <blockquote className="text-center">
-                  <motion.p
-                    className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-snug mb-8"
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.7, delay: 0.2 }}
-                  >
-                    {t(`${quote.key}.text`)}
-                  </motion.p>
-                  <motion.cite
-                    className="text-lg md:text-xl text-white/60 not-italic font-medium"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                  >
-                    — {t(`${quote.key}.author`)}
-                  </motion.cite>
-                </blockquote>
-              </ScrollReveal>
-            </div>
+    <LinesSection 
+      bgColor="#980000" 
+      lines={QUOTE_LINES}
+    >
+      <div className="flex flex-col items-center justify-center gap-10 md:gap-16 px-10">
+        {/* Quote Text */}
+        <motion.p 
+          className="text-white font-montserrat font-medium text-center leading-[120%] max-w-[1500px]"
+          style={{ fontSize: "clamp(48px, 8vw, 128px)" }}
+        >
+          {t("quote1.text")}
+        </motion.p>
 
-            {/* Decorative divider line */}
-            {idx < quotes.length - 1 && (
-              <div className="max-w-xs mx-auto mt-16">
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                  className="h-px bg-white/20 origin-center"
-                />
-              </div>
-            )}
-          </div>
-        ))}
-      </motion.div>
-    </section>
+        {/* Author */}
+        <motion.span 
+          className="text-white font-montserrat font-normal text-center leading-none"
+          style={{ fontSize: "clamp(24px, 4vw, 60px)" }}
+        >
+          {t("quote1.author")}
+        </motion.span>
+      </div>
+    </LinesSection>
   );
 }

@@ -48,6 +48,9 @@ export default async function HomePage({ params }: Props) {
       <div className="h-[100dvh] w-full snap-start snap-always shrink-0 relative">
         <AdaptiveUISection />
       </div>
+      <div className="h-[100dvh] w-full snap-start snap-always shrink-0 relative">
+        <QuoteSection />
+      </div>
     </div>
   );
 }
