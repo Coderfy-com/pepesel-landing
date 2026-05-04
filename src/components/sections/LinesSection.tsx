@@ -20,13 +20,15 @@ interface LinesSectionProps {
   bgColor?: string;
   lines?: typeof DEFAULT_LINES;
   onFinished?: () => void;
+  maxWidth?: string;
 }
 
 export function LinesSection({ 
   children, 
   bgColor = "#111113", 
   lines = DEFAULT_LINES,
-  onFinished 
+  onFinished,
+  maxWidth = "1800px"
 }: LinesSectionProps) {
   const [isFinished, setIsFinished] = useState(false);
 
@@ -35,74 +37,81 @@ export function LinesSection({
       className="relative w-full h-full overflow-hidden flex items-center justify-center"
       style={{ backgroundColor: bgColor }}
     >
-      <div className="relative w-full max-w-[1100px] aspect-[1100/660] flex justify-center items-center">
+      <div 
+        className="relative w-full flex justify-center items-center"
+        style={{ maxWidth: maxWidth }}
+      >
         {/* SVG Lines — one complete animation cycle only */}
-        <svg
-          viewBox="0 0 1100 660"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full object-contain overflow-visible"
-        >
-          {lines.map((line, i) => (
-            <motion.path
-              key={i}
-              d={line.d}
-              fill={line.fill}
-              initial={{ y: 0, x: 0, opacity: 0 }}
-              whileInView={{
-                x: [0, line.xRange, 0],
-                y: [0, line.yRange, 0],
-                opacity: [0, 1, 1, 0.5],
-              }}
-              transition={{
-                x: {
-                  duration: LINE_ANIM_DURATION * 2,
-                  ease: "easeInOut",
-                  delay: i * 0.1,
-                  times: [0, 0.5, 1],
-                },
-                y: {
-                  duration: LINE_ANIM_DURATION * 2,
-                  ease: "easeInOut",
-                  delay: i * 0.1,
-                  times: [0, 0.5, 1],
-                },
-                opacity: {
-                  duration: LINE_ANIM_DURATION * 2,
-                  ease: "easeInOut",
-                  delay: i * 0.1,
-                  times: [0, 0.1, 0.8, 1],
-                },
-              }}
-              viewport={{ once: true, amount: 0.1 }}
-              onAnimationComplete={() => {
-                // Trigger text appearance when the last line finishes
-                if (i === lines.length - 1) {
-                  setIsFinished(true);
-                  onFinished?.();
-                }
-              }}
-            />
-          ))}
-        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <svg
+            viewBox="0 0 1100 660"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-full object-contain overflow-visible"
+          >
+            {lines.map((line, i) => (
+              <motion.path
+                key={i}
+                d={line.d}
+                fill={line.fill}
+                initial={{ y: 0, x: 0, opacity: 0 }}
+                whileInView={{
+                  x: [0, line.xRange, 0],
+                  y: [0, line.yRange, 0],
+                  opacity: [0, 1, 1, 0.4],
+                }}
+                transition={{
+                  x: {
+                    duration: LINE_ANIM_DURATION * 2,
+                    ease: "easeInOut",
+                    delay: i * 0.1,
+                    times: [0, 0.5, 1],
+                  },
+                  y: {
+                    duration: LINE_ANIM_DURATION * 2,
+                    ease: "easeInOut",
+                    delay: i * 0.1,
+                    times: [0, 0.5, 1],
+                  },
+                  opacity: {
+                    duration: LINE_ANIM_DURATION * 2,
+                    ease: "easeInOut",
+                    delay: i * 0.1,
+                    times: [0, 0.1, 0.8, 1],
+                  },
+                }}
+                viewport={{ once: true, amount: 0.1 }}
+                onAnimationComplete={() => {
+                  // Trigger text appearance when the last line finishes
+                  if (i === lines.length - 1) {
+                    setIsFinished(true);
+                    onFinished?.();
+                  }
+                }}
+              />
+            ))}
+          </svg>
+        </div>
 
         {/* Overlay content (text, etc.) — appears after lines finish */}
-        <AnimatePresence>
-          {children && isFinished && (
-            <motion.div
-              className="absolute inset-0 flex items-center justify-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{
-                duration: 1.2,
-                ease: "easeOut",
-              }}
-            >
-              {children}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className="relative z-10 w-full flex items-center justify-center min-h-[660px]">
+          <AnimatePresence mode="wait">
+            {children && isFinished && (
+              <motion.div
+                className="w-full flex items-center justify-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  duration: 1.2,
+                  ease: "easeOut",
+                }}
+              >
+                {children}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </section>
   );
