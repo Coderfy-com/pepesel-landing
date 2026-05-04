@@ -117,8 +117,8 @@ export function AdaptiveUISection() {
             text={t("badges.voice")}
             bg="#FFFFFF"
             textColor="#0A0A0A"
-            x={101} y={617}
-            rotate={-20}
+            x={145} y={698}
+            rotate={-27}
             delay={0.7}
           />
 
@@ -131,23 +131,37 @@ export function AdaptiveUISection() {
             delay={0.4}
           />
 
-          {/* Badge: adapt to your lang */}
-          <Badge 
-            text={t("badges.lang")}
-            bg="#EF4C35"
-            x={343} y={749}
-            rotate={-8}
-            delay={0.55}
-          />
+          {/* Stacked badges: Lang strictly above Theme, touching, aligned to the right edge */}
+          <div 
+            className="absolute flex flex-col items-end pointer-events-none"
+            style={{ left: "92px", top: "748px" }}
+          >
+            {/* Badge: adapt to your lang */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.55, type: "spring", bounce: 0.3 }}
+              viewport={{ once: true }}
+              className="flex items-center justify-center px-[44px] h-[116px] rounded-full bg-[#EF4C35] shadow-2xl w-max"
+            >
+              <span className="text-white font-montserrat font-bold text-[32px] leading-none whitespace-nowrap">
+                {t("badges.lang")}
+              </span>
+            </motion.div>
 
-          {/* Badge: adapt to your dark/light mode policy */}
-          <Badge 
-            text={t("badges.theme")}
-            bg="#981A1E"
-            x={92} y={864}
-            rotate={-5}
-            delay={0.65}
-          />
+            {/* Badge: adapt to your dark/light mode policy */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.65, type: "spring", bounce: 0.3 }}
+              viewport={{ once: true }}
+              className="flex items-center justify-center px-[44px] h-[116px] rounded-full bg-[#981A1E] shadow-2xl w-max"
+            >
+              <span className="text-white font-montserrat font-bold text-[32px] leading-none whitespace-nowrap">
+                {t("badges.theme")}
+              </span>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>

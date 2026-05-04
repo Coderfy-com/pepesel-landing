@@ -27,11 +27,11 @@
     "subtitle": "адаптується під вподобання користувача самостійно!",
     "badges": {
       "catalog": "адаптує каталог під вас",
-      "lang": "адаптується до вашої мови",
+      "lang": "adapt to your lang",
       "activity": "оптимізує під вашу активність",
-      "theme": "підтримує темну/світлу тему",
+      "theme": "adapt to your dark/light mode policy",
       "geo": "гео-адаптація",
-      "voice": "голосова підтримка"
+      "voice": "voice support"
     }
   },
   "Quotes": {
